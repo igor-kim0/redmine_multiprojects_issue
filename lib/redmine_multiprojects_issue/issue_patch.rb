@@ -21,7 +21,7 @@ module RedmineMultiprojectsIssue
         statement_by_role = {}
         user.projects_by_role.each do |role, projects|
           projects = projects & [options[:project]] if options[:project]
-          if role.allowed_to?(:view_issues) && projects.any?
+          if role.allowed_to?(:view_issues) && role.allowed_to?(:view_multiprojects_issues) && projects.any?
             statement_by_role[role] = "project_id IN (#{projects.collect(&:id).join(',')})"
           end
         end
